@@ -35,8 +35,20 @@ class _SignUpState extends State<SignUp> {
       });
     }
   }
+  final phoneController= TextEditingController();
 
   @override
+
+  void initState(){
+    super.initState();
+    phoneController.addListener(_printPhoneValue);
+  }
+  @override
+  void dispose(){
+    phoneController.dispose();
+    super.dispose();
+  }
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange,
@@ -91,7 +103,7 @@ class _SignUpState extends State<SignUp> {
                         labelText: "Nombre Completo",
                         labelStyle: TextStyle(
                           color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -112,12 +124,13 @@ class _SignUpState extends State<SignUp> {
                         labelText: "Correo Electronico",
                         labelStyle: TextStyle(
                           color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: phoneController,
                       keyboardType: TextInputType.phone,
                       autocorrect: false,
                       decoration: const InputDecoration(
@@ -133,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                         labelText: "Celular",
                         labelStyle: TextStyle(
                           color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
@@ -163,7 +176,9 @@ class _SignUpState extends State<SignUp> {
                           helperText: 'Fecha de Nacimiento'),
                     ),
                     const SizedBox(height: 20),
-                    DropdownButtonFormField(items: const [
+                    DropdownButtonFormField(
+                      hint: const Text('Género'),
+                      items: const [
                       DropdownMenuItem(
                         value: 'Femenino',
                         child: Text('Femenino'),
@@ -172,7 +187,9 @@ class _SignUpState extends State<SignUp> {
                         value: 'Masculino',
                         child: Text('Masculino'),
                       )
-                    ], onChanged: (value) {}),
+                    ], onChanged: (value) {
+                      print(value);
+                    }),
                     const SizedBox(height: 20),
                     ElevatedButton(
                       style: kbutton,
@@ -192,5 +209,8 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+  void _printPhoneValue(){
+    print('Second text field: ${phoneController.text}');
   }
 }

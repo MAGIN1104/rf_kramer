@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rfk/Views/HomePage.dart';
 import 'package:rfk/Views/Login.dart';
 import 'package:rfk/Views/SignUp.dart';
 
@@ -9,8 +10,8 @@ class MyApp extends StatelessWidget {
       title: 'RocaFiel Kramer',
       initialRoute: '/',
       routes: {
-        '/': (context) => Login(),
-        'registrar': (context) => SignUp(),
+        '/': (context) => HomePage(),
+        // 'registrar': (context) => SignUp(),
       },
     );
   }

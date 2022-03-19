@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
                           labelText: 'Correo Electrónico',
                           labelStyle: TextStyle(
                             color: Colors.orange,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
                           labelText: "Contraseña",
                           labelStyle: TextStyle(
                             color: Colors.orange,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                         onPressed: () {},
                         child: const Text(
                           "Ingresar",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.w400),
                         ),
                       ),
                       TextButton(
@@ -110,8 +110,9 @@ class _LoginState extends State<Login> {
                         child: const Text(
                           'No tienes una cuenta?',
                           style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold),
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
                       ),
                     ],
