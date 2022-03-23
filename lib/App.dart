@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:rfk/Views/HomePage.dart';
-import 'package:rfk/Views/Login.dart';
-import 'package:rfk/Views/SignUp.dart';
+import 'package:rfk/Views/GeneralPage.dart';
+import 'package:rfk/Views/GroupPage.dart';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme:
+          ThemeData(appBarTheme: const AppBarTheme(color: Color(0xffc29b61))),
       title: 'RocaFiel Kramer',
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
-        // 'registrar': (context) => SignUp(),
+        '/': (_) => const GeneralPage(),
       },
     );
   }
