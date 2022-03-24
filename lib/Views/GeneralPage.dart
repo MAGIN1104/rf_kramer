@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rfk/Views/HomePage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rfk/Views/NewsPage.dart';
+import 'package:rfk/Views/PetitionsPage.dart';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({Key? key}) : super(key: key);
@@ -21,10 +22,7 @@ class _GeneralPageState extends State<GeneralPage> {
       'Index 3: Enseñanza',
       style: optionStyle,
     ),
-    const Text(
-      'Index 4: Peticiones',
-      style: optionStyle,
-    ),
+    PetitionPage(),
   ];
 
   void _onItemTapped(int index) {
