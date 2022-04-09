@@ -10,8 +10,8 @@ class Groups {
   final String mensaje;
   final String versiculo;
   final String description;
-  final String cellphone;
-
-  Groups(
-      this.id, this.mensaje, this.versiculo, this.description, this.cellphone);
+  final String urlWhatsapp;
+  final String ubication;
+  Groups(this.id, this.mensaje, this.versiculo, this.description,
+      this.urlWhatsapp, this.ubication);
 }
