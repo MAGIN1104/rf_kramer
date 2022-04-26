@@ -28,9 +28,12 @@ class ButtonLink extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icons,
-              color: colorIcon,
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Icon(
+                icons,
+                color: colorIcon,
+              ),
             ),
             Text(
               textButton,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rfk/Views/GeneralPage.dart';
-import 'package:rfk/Views/GroupPage.dart';
+import 'package:rfk/services/home_service.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,6 +10,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(color: Color(0xffc29b61)),
         inputDecorationTheme: const InputDecorationTheme(
+            errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
             floatingLabelStyle: TextStyle(
               color: Color(0xffc29b61),
             ),
@@ -22,9 +31,9 @@ class MyApp extends StatelessWidget {
             ))),
       ),
       title: 'RocaFiel Kramer',
-      initialRoute: '/',
+      initialRoute: 'general',
       routes: {
-        '/': (_) => const GeneralPage(),
+        'general': (_) => const GeneralPage(),
       },
     );
   }

@@ -1,6 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:rfk/Widgets/ButtonLink.dart';
+import 'package:rfk/services/services.dart';
 
 class NewsPage extends StatefulWidget {
   NewsPage({Key? key}) : super(key: key);
@@ -34,36 +36,62 @@ class _NewsPageState extends State<NewsPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final newsService = Provider.of<NewSevice>(context);
+    if (newsService.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return ListView.builder(
-      itemCount: data.length,
+      itemCount: newsService.newsList.length,
       itemBuilder: (context, int index) {
-        return Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Image.asset(
-                  data[index]["img"],
-                  fit: BoxFit.fill,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            elevation: 10,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                newsService.newsList[index].imageUrl != ""
+                    ? SizedBox(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: FadeInImage(
+                          placeholder:
+                              const AssetImage('assets/img/no-image.jpg'),
+                          image: NetworkImage(
+                              "https://drive.google.com/uc?export=view&id=${newsService.newsList[index].imageUrl}"),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 10, bottom: 5),
+                  child: Text(
+                    newsService.newsList[index].title,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  data[index]["title"],
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8, bottom: 15, left: 15, right: 15),
+                  child: Text(newsService.newsList[index].description,
+                      textAlign: TextAlign.justify,
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w300)),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(data[index]["description"],
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w300)),
-              ),
-            ],
+                newsService.newsList[index].urlVideo != ""
+                    ? ButtonLink(
+                        url: newsService.newsList[index].urlVideo!,
+                        textButton: "Ver Video",
+                        colorText: Colors.red,
+                        icons: FontAwesomeIcons.youtube,
+                        colorIcon: Colors.red)
+                    : Container()
+              ],
+            ),
           ),
         );
       },

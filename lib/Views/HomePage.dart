@@ -1,73 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:rfk/Widgets/Card.dart';
 import 'package:rfk/Widgets/CardButton.dart';
-import 'package:rfk/Widgets/Constants.dart';
+import 'package:rfk/services/home_service.dart';
+import '../models/homeModel.dart';
+import 'package:skeletons/skeletons.dart';
+import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-final List<String> imgList = [
-  'assets/img/img1.jpg',
-  'assets/img/img2.jpg',
-  'assets/img/img3.jpg',
-];
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          margin: const EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 3),
-          child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-              child: Stack(
-                children: <Widget>[
-                  Image.asset(item, fit: BoxFit.fill, width: 1000.0),
-                  // Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                  Positioned(
-                    bottom: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromARGB(200, 0, 0, 0),
-                            Color.fromARGB(0, 0, 0, 0)
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                    ),
-                  ),
-                ],
-              )),
-        ))
-    .toList();
-
 class _HomePageState extends State<HomePage> {
+  final imageService = HomeService();
   @override
   Widget build(BuildContext context) {
-    return _buttonCards(context);
+    // final imageService = Provider.of<HomeService>(context);
+    // return _buttonCards(context, imageService.images);
+    return FutureBuilder(
+      future: imageService.loadImages(),
+      builder: (context, AsyncSnapshot<List<ImageHome>> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const Center(
+              child: Image(image: AssetImage('assets/img/spinner.gif')),
+            );
+          default:
+            if (snapshot.hasError) {
+              return _buttonCards(
+                  context, [ImageHome(img: 'assets/img/404.jpg')]);
+            } else {
+              final dataResp = snapshot.data;
+              final List<ImageHome> images = [];
+              dataResp?.forEach(
+                (element) {
+                  images.add(element);
+                },
+              );
+              return _buttonCards(context, images);
+            }
+        }
+        // if (snapshot.hasData) {
+        //   final dataResp = snapshot.data;
+        //   final List<ImageHome> images = [];
+        //   dataResp?.forEach(
+        //     (element) {
+        //       images.add(element);
+        //     },
+        //   );
+        //   return _buttonCards(context, images);
+        // } else {
+        //   return const Center(
+        //     child: Image(image: AssetImage('assets/img/spinner.gif')),
+        //   );
+        // }
+      },
+    );
   }
 }
 
-Widget _carrousel() {
-  return CarouselSlider(
-    options: CarouselOptions(
-      autoPlay: true,
-      aspectRatio: 2.0,
-      enlargeCenterPage: true,
-    ),
-    items: imageSliders,
+Widget _carrousel(List<ImageHome> images) {
+  return Swiper(
+    itemWidth: 300,
+    itemHeight: 200,
+    itemCount: images.length,
+    layout: SwiperLayout.STACK,
+    itemBuilder: (_, int index) {
+      final image = images[index];
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: FadeInImage(
+          placeholder: const AssetImage('assets/img/no-image.jpg'),
+          image: NetworkImage(
+              "https://drive.google.com/uc?export=view&id=${image.img}"),
+          fit: BoxFit.cover,
+        ),
+      );
+    },
   );
 }
 
-Widget _buttonCards(BuildContext context) {
+Widget _buttonCards(BuildContext context, List<ImageHome> images) {
   return SingleChildScrollView(
     physics: const BouncingScrollPhysics(),
     child: Column(
@@ -76,9 +90,15 @@ Widget _buttonCards(BuildContext context) {
         // CardHomeInformation(ctitle: "Visión", cdescription: vision),
         // CardHomeInformation(ctitle: "Misión", cdescription: mision),
         SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.3,
-            child: _carrousel()),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: images.isEmpty
+              ? SvgPicture.asset(
+                  'assets/svg/404.svg',
+                  matchTextDirection: true,
+                )
+              : _carrousel(images),
+        ),
         Row(children: [
           Expanded(
               child: CardButton(
@@ -100,6 +120,28 @@ Widget _buttonCards(BuildContext context) {
         CardButton(
             id: 4, kimg: "assets/img/child.jpeg", ktitle: "Ovejitas de Jesús")
       ],
+    ),
+  );
+}
+
+Widget skeleton(BuildContext context) {
+  return ListView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: 3,
+    itemBuilder: (context, index) => Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: const BoxDecoration(color: Colors.white),
+        child: SkeletonItem(
+            child: SkeletonAvatar(
+          style: SkeletonAvatarStyle(
+            width: double.infinity,
+            minHeight: MediaQuery.of(context).size.height / 8,
+            maxHeight: MediaQuery.of(context).size.height / 3,
+          ),
+        )),
+      ),
     ),
   );
 }
