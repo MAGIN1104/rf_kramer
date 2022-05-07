@@ -52,6 +52,7 @@ dependencies:
   stacked: ^2.3.3
   video_player: ^2.4.0
   chewie: ^1.3.2
+  youtube_player_iframe: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
     - assets/img/
     - assets/environment/.env
     - assets/svg/
+    - assets/video/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
