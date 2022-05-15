@@ -3,6 +3,7 @@ import 'package:rfk/Views/HomePage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rfk/Views/NewsPage.dart';
 import 'package:rfk/Views/PetitionsPage.dart';
+import 'package:rfk/Views/TeachingPage.dart';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({Key? key}) : super(key: key);
@@ -18,10 +19,7 @@ class _GeneralPageState extends State<GeneralPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     NewsPage(),
-    const Text(
-      'Index 3: Enseñanza',
-      style: optionStyle,
-    ),
+    TeachingPage(),
     PetitionPage(),
   ];
 

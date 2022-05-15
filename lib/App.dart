@@ -8,6 +8,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        scrollbarTheme: ScrollbarThemeData(
+            thumbColor: MaterialStateProperty.all(Color(0xffc29b61))),
         appBarTheme: const AppBarTheme(color: Color(0xffc29b61)),
         inputDecorationTheme: const InputDecorationTheme(
             errorBorder: OutlineInputBorder(
