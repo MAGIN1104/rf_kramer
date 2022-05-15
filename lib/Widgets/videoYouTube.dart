@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubeAppDemo extends StatefulWidget {
@@ -23,7 +24,7 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
         // playlist: [],
         // startAt: const Duration(minutes: 0, seconds: 0),
         startAt: Duration.zero,
-        showControls: false,
+        showControls: true,
         showFullscreenButton: true,
         desktopMode: false,
         privacyEnhanced: true,
@@ -51,46 +52,41 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
       child: Scaffold(
         body: LayoutBuilder(
           builder: (context, constraints) {
-            return ListView(
+            return Stack(
               children: [
-                Stack(
-                  children: [
-                    player,
-                    Positioned.fill(
-                      child: YoutubeValueBuilder(
-                        controller: _controller,
-                        builder: (context, value) {
-                          return AnimatedCrossFade(
-                            firstChild: const SizedBox.shrink(),
-                            secondChild: Material(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      YoutubePlayerController.getThumbnail(
-                                        videoId:
-                                            // _controller.params.playlist.first,
-                                            _controller.initialVideoId,
-                                        quality: ThumbnailQuality.medium,
-                                      ),
-                                    ),
-                                    fit: BoxFit.fitWidth,
+                const SizedBox(width: double.infinity, child: player),
+                Positioned.fill(
+                  child: YoutubeValueBuilder(
+                    controller: _controller,
+                    builder: (context, value) {
+                      return AnimatedCrossFade(
+                        firstChild: const SizedBox.shrink(),
+                        secondChild: Material(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  YoutubePlayerController.getThumbnail(
+                                    videoId: widget.idUrlYoutube,
+                                    // _controller.params.playlist.first,
+                                    quality: ThumbnailQuality.medium,
                                   ),
                                 ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
-                            crossFadeState: value.isReady
-                                ? CrossFadeState.showFirst
-                                : CrossFadeState.showSecond,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ),
+                        crossFadeState: value.isReady
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 300),
+                      );
+                    },
+                  ),
                 ),
               ],
             );
